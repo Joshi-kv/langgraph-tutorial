@@ -7,7 +7,8 @@
     "graph_1": "./src/module_1/1_graph_state_dict.py:graph",
     "graph_2": "./src/module_1/2_graph_conditonal_edges.py:graph",
     "graph_3": "./src/module_1/3_graph_messages_state.py:graph",
-    "graph_4": "./src/module_1/4_graph_tool.py:graph"
+    "graph_4": "./src/module_1/4_graph_tool.py:graph",
+    "graph_5": "./src/module_1/5_graph_hitl.py:graph"
   },
   "env": ".env"
 }

@@ -1,8 +1,14 @@
+import os
+
 from langgraph.graph import StateGraph, MessagesState, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage
+from langchain_ollama import ChatOllama
+from dotenv import load_dotenv
+
+load_dotenv()
 
 @tool
 def multiply(n1: int, n2: int) -> int:
@@ -23,16 +29,20 @@ tools = [multiply, addition, subtraction]
 
 system_message = SystemMessage(
     content=(
-        "You are a helpful math teacher.\n"
-        "If the user asks a math related question, use the available tools to answer the question.\n"
-        "Otherwise, just answer no tools available.\n"
-        "Always give a short summary after the answer."
+        "You are a helpful math teacher. Use the available tools to answer math questions. "
+        "Once you receive a tool result, respond directly to the user with the answer — do not call the same tool again."
     )
 )
 
-llm = ChatGoogleGenerativeAI(
-    model="gemini-3.1-flash-lite",
-    temperature=0.7,
+# llm = ChatGoogleGenerativeAI(
+#     model="gemini-3.1-flash-lite",
+#     temperature=0.7,
+# ).bind_tools(tools)
+
+llm = ChatOllama(
+    base_url=os.getenv("OLLAMA_BASE_URL"),
+    model="qwen2.5:7b",
+    temperature=0
 ).bind_tools(tools)
 
 def chat(state: MessagesState) -> MessagesState:
